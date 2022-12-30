@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+      function calcCrow(lat1, lon1, lat2, lon2) {
+        var R = 6371; // km
+        var dLat = toRad(lat2-lat1);
+        var dLon = toRad(lon2-lon1);
+        var lat1 = toRad(lat1);
+        var lat2 = toRad(lat2);
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        // Convert to yards
+        return d*1093.6;
+      }
+
+      // Converts numeric degrees to radians
+      function toRad(Value) {
+          return Value * Math.PI / 180;
+      }
+
+      function setFirstLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(setFirstGPSLocation);
+        } else {
+          initialLocationInfo.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      function setFirstGPSLocation(position){
+        localStorage.setItem("first_location_latitude", position.coords.latitude);
+        localStorage.setItem("first_location_longitude", position.coords.longitude);
+        document.getElementById("firstLocationButton").style.visibility = 'hidden';
+        document.getElementById("secondLocationButton").style.visibility = 'visible';
+        document.getElementById("resetLocationButton").style.visibility = 'visible';
+        document.getElementById("first_location_latitude").innerHTML = position.coords.latitude;
+        document.getElementById("first_location_longitude").innerHTML = position.coords.longitude;
+      }
+
+      function setSecondLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(setSecondGPSLocation);
+        } else {
+          initialLocationInfo.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      function setSecondGPSLocation(position){
+        alert(calcCrow(localStorage.getItem("first_location_latitude"),localStorage.getItem("first_location_longitude"),position.coords.latitude,position.coords.longitude).toFixed(1) + " yards");
+      }
+
+      function loadDocument() {
+        first_location = localStorage.getItem("first_location_latitude");
+        if(first_location == null){
+          document.getElementById("firstLocationButton").style.visibility = 'visible';
+          document.getElementById("secondLocationButton").style.visibility = 'hidden';
+          document.getElementById("resetLocationButton").style.visibility = 'hidden';
+        }
+        else {
+          document.getElementById("firstLocationButton").style.visibility = 'hidden';
+          document.getElementById("secondLocationButton").style.visibility = 'visible';
+          document.getElementById("resetLocationButton").style.visibility = 'visible';
+          document.getElementById("first_location_latitude").innerHTML = localStorage.getItem("first_location_latitude");;
+          document.getElementById("first_location_longitude").innerHTML = localStorage.getItem("first_location_longitude");;
+        }
+      }
+    </script>
+  </head>
+  <body onload="loadDocument()">
+    <button id="firstLocationButton" onclick="firstLocationButtonClicked()">Record First Location</button>
+    <button id="secondLocationButton" onclick="secondLocationButtonClicked()">Record Second Location</button>
+    <button id="resetLocationButton" onclick="resetLocationButtonClicked()">Reset Original Location</button>
+    <p id="first_location_latitude"></p>
+    <p id="first_location_longitude"></p>
+    <script>
+      function firstLocationButtonClicked() {
+        setFirstLocation();
+      }
+      function secondLocationButtonClicked() {
+        setSecondLocation();
+      }
+
+      function resetLocationButtonClicked(){
+        localStorage.clear();
+        document.getElementById("firstLocationButton").style.visibility = 'visible';
+        document.getElementById("secondLocationButton").style.visibility = 'hidden';
+        document.getElementById("resetLocationButton").style.visibility = 'hidden';
+        document.getElementById("first_location_latitude").innerHTML = "";
+        document.getElementById("first_location_longitude").innerHTML = "";
+      }
+    </script>
+
+  </body>
+</html>
