@@ -2,23 +2,22 @@
 <html>
   <head>
     <style type="text/css">
-#parent{
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   position: relative;
-   width: 100%;
-   height: 100vh;
-   background: lightgray;
-}
-#child{
-   position: relative;
-/*   background: black;*/
-   padding: 2rem;
-   color: white;
-/*   box-shadow: 5px 5px 20px rgba(0,0,0,.4);*/
-   border-radius: 5px;
-}
+      #outer{
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         position: relative;
+         width: 100%;
+         height: 100vh;
+         background: lightgray;
+      }
+      #inner{
+         position: relative;
+         padding: 2rem;
+         color: black;
+         border-radius: 5px;
+      }
+
       .button {
         border: none;
         color: white;
@@ -104,16 +103,14 @@
     <title>GPS Distancer</title>
   </head>
   <body onload="loadDocument()">
-<div id="parent">
-   <div id="child">
-        <button id="firstLocationButton" class="button blue-button" onclick="firstLocationButtonClicked()">Record Starting Location</button>
-        <p id="totalDistance"></p>
-        <button id="secondLocationButton" class="button green-button" onclick="secondLocationButtonClicked()">Calculate Distance</button>
-        <button id="resetLocationButton" class="button red-button" onclick="resetLocationButtonClicked()">Reset</button>
-   </div>
-</div>
-
-
+    <div id="outer">
+     <div id="inner">
+      <button id="firstLocationButton" class="button blue-button" onclick="firstLocationButtonClicked()">Record Starting Location</button>
+      <p id="totalDistance"></p>
+      <button id="secondLocationButton" class="button green-button" onclick="secondLocationButtonClicked()">Calculate Distance</button>
+      <button id="resetLocationButton" class="button red-button" onclick="resetLocationButtonClicked()">Reset</button>
+     </div>
+    </div>
     <script>
       function firstLocationButtonClicked() {
         setFirstLocation();
