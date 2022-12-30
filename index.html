@@ -58,33 +58,6 @@
           return Value * Math.PI / 180;
       }
 
-      function setFirstLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(setFirstGPSLocation);
-        } else {
-          alert("Geolocation is not supported by this browser");
-        }
-      }
-      function setFirstGPSLocation(position){
-        localStorage.setItem("first_location_latitude", position.coords.latitude);
-        localStorage.setItem("first_location_longitude", position.coords.longitude);
-        document.getElementById("firstLocationButton").style.display = 'none';
-        document.getElementById("secondLocationButton").style.display = 'block';
-        document.getElementById("resetLocationButton").style.display = 'block';
-      }
-
-      function setSecondLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(setSecondGPSLocation);
-        } else {
-          alert("Geolocation is not supported by this browser");
-        }
-      }
-      function setSecondGPSLocation(position){
-        distance_yards = calcYards(localStorage.getItem("first_location_latitude"),localStorage.getItem("first_location_longitude"),position.coords.latitude,position.coords.longitude).toFixed(1);
-        document.getElementById("totalDistance").innerHTML = distance_yards + " yards";
-      }
-
       function loadDocument() {
         first_location = localStorage.getItem("first_location_latitude");
         if(first_location == null){
@@ -99,6 +72,41 @@
           document.getElementById("resetLocationButton").style.display = 'block';
         }
       }
+
+      function firstLocationButtonClicked() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(setFirstGPSLocation);
+        } else {
+          alert("Geolocation is not supported by this browser");
+        }
+      }
+      function setFirstGPSLocation(position){
+        localStorage.setItem("first_location_latitude", position.coords.latitude);
+        localStorage.setItem("first_location_longitude", position.coords.longitude);
+        document.getElementById("firstLocationButton").style.display = 'none';
+        document.getElementById("secondLocationButton").style.display = 'block';
+        document.getElementById("resetLocationButton").style.display = 'block';
+      }
+
+      function secondLocationButtonClicked() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(setSecondGPSLocation);
+        } else {
+          alert("Geolocation is not supported by this browser");
+        }
+      }
+      function setSecondGPSLocation(position){
+        distance_yards = calcYards(localStorage.getItem("first_location_latitude"),localStorage.getItem("first_location_longitude"),position.coords.latitude,position.coords.longitude).toFixed(1);
+        document.getElementById("totalDistance").innerHTML = distance_yards + " yards";
+      }
+
+      function resetLocationButtonClicked(){
+        localStorage.clear();
+        document.getElementById("firstLocationButton").style.display = 'block';
+        document.getElementById("secondLocationButton").style.display = 'none';
+        document.getElementById("resetLocationButton").style.display = 'none';
+        document.getElementById("totalDistance").innerHTML = '';
+      }
     </script>
     <title>GPS Distancer</title>
   </head>
@@ -111,21 +119,5 @@
       <button id="resetLocationButton" class="button red-button" onclick="resetLocationButtonClicked()">Reset</button>
      </div>
     </div>
-    <script>
-      function firstLocationButtonClicked() {
-        setFirstLocation();
-      }
-      function secondLocationButtonClicked() {
-        setSecondLocation();
-      }
-
-      function resetLocationButtonClicked(){
-        localStorage.clear();
-        document.getElementById("firstLocationButton").style.display = 'block';
-        document.getElementById("secondLocationButton").style.display = 'none';
-        document.getElementById("resetLocationButton").style.display = 'none';
-        document.getElementById("totalDistance").innerHTML = '';
-      }
-    </script>
   </body>
 </html>
