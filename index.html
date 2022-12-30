@@ -2,6 +2,23 @@
 <html>
   <head>
     <style type="text/css">
+#parent{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   width: 100%;
+   height: 100vh;
+   background: lightgray;
+}
+#child{
+   position: relative;
+/*   background: black;*/
+   padding: 2rem;
+   color: white;
+/*   box-shadow: 5px 5px 20px rgba(0,0,0,.4);*/
+   border-radius: 5px;
+}
       .button {
         border: none;
         color: white;
@@ -9,15 +26,15 @@
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
+        font-size: 48px;
+        margin: 40px 2px;
         cursor: pointer;
       }
       .green-button {background-color: #4CAF50;}
       .blue-button {background-color: #008CBA;}
       .red-button {background-color: #f44336;}
       #totalDistance {
-        font-size: 32px;
+        font-size: 64px;
       }
     </style>
     <script>
@@ -75,6 +92,7 @@
           document.getElementById("firstLocationButton").style.display = 'block';
           document.getElementById("secondLocationButton").style.display = 'none';
           document.getElementById("resetLocationButton").style.display = 'none';
+          document.getElementById("totalDistance").innerHTML = '';
         }
         else {
           document.getElementById("firstLocationButton").style.display = 'none';
@@ -86,10 +104,16 @@
     <title>GPS Distancer</title>
   </head>
   <body onload="loadDocument()">
-    <button id="firstLocationButton" class="button blue-button" onclick="firstLocationButtonClicked()">Record Starting Location</button>
-    <button id="secondLocationButton" class="button green-button" onclick="secondLocationButtonClicked()">Calculate Distance</button>
-    <button id="resetLocationButton" class="button red-button" onclick="resetLocationButtonClicked()">Reset</button>
-    <p id="totalDistance"></p>
+<div id="parent">
+   <div id="child">
+        <button id="firstLocationButton" class="button blue-button" onclick="firstLocationButtonClicked()">Record Starting Location</button>
+        <p id="totalDistance"></p>
+        <button id="secondLocationButton" class="button green-button" onclick="secondLocationButtonClicked()">Calculate Distance</button>
+        <button id="resetLocationButton" class="button red-button" onclick="resetLocationButtonClicked()">Reset</button>
+   </div>
+</div>
+
+
     <script>
       function firstLocationButtonClicked() {
         setFirstLocation();
@@ -103,6 +127,7 @@
         document.getElementById("firstLocationButton").style.display = 'block';
         document.getElementById("secondLocationButton").style.display = 'none';
         document.getElementById("resetLocationButton").style.display = 'none';
+        document.getElementById("totalDistance").innerHTML = '';
       }
     </script>
   </body>
